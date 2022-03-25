@@ -1,60 +1,71 @@
-from random import choice
-from prettytable import PrettyTable
-import fcfs
-import sjf
-import sjf_p
-import rr
 
-# def switcher(choice):
-#     switch = {
-#         1: "fcfs",
-#         2: "sjf_np",
-#         3: "sjf_p",
-#         4: "round_robin"
-#         # 5: "priority_scheduling"
-#     }
-#     return switch.get(choice, "Invalid Choice")
+from processes import createProcess
+from processes import process as p
+from processes import printData
+from fcfs import fcfs
+from sjf import sjf
+from sjf import sjfP
+from rr import roundRobin
+from priority import mainP
 
 
-# Common for all algorithms
-# Initializing variables
-num = 0
-process_lst = []
-process_names = []
-arrival_time = 0
-burst_time = 0
-average_WT = 0
-average_TAT = 0
-average_CT = 0
+def main():
+    flag = 1
 
-if __name__ == "__main__":
-    print("\n SIMULATION OF CPU SCHEDULING ALGORITHM")
-    print(" Menu:")
-    print(" 1. FCFS")
-    print(" 2. SJF")
-    print(" 3. SJF with Preemption")
-    print(" 4. Round Robin")
-    print(" 5. Exit")
-    choice = input(" Select: ")
-
-    flag = True
     while flag:
-        if choice == "1" or choice == "FCFS".lower():
-            print("Running FCFS Algorithm...")
-            fcfs.run()
-        elif choice == "2" or choice == "SJF".lower():
-            print("Running SJF Algorithm...")
-            sjf.run()
-        elif choice == "3" or choice == "SJF with Preemption".lower():
-            print("Running SJF with Preemption Algorithm...")
-            sjf_p.run()
-        elif choice == "4" or choice == "Round Robin".lower():
-            print("Running Round Robbin Algorithm...")
-            rr.run()
-        elif choice == "5" or choice == "Exit".lower():
-            print("Exiting...")
-            break
-            quit()
+        print("\n\t ========|| CPU Scheduling Simulator ||======== \n")
+        print("\t Select CPU Scheduling Algorithm:")
+        print("\t 1. First Come First Serve ")
+        print("\t 2. Shortest Job First(Non-preemptive) ")
+        print("\t 3. Shortest Remaining Time First(Preemptive) ")
+        print("\t 4. Round Robin ")
+        print("\t 5. Priority Scheduling ")
+        print("\t 6. Exit")
+        print()
+        choice = int(input("Enter Your Choice :- "))
+        if choice < 6:
+            if choice == 0:
+                flag = 0
+                break
+            else:
+                if choice == 1:
+                    # First Come First Serve Algorithm
+                    print("Executing FCFS\n")
+                    createProcess()
+                    fcfs1 = fcfs(p.processes)
+                    printData(fcfs1, fcfs1)
+                elif choice == 2:
+                    # Shortest Job First Algorithm
+                    print("Executing SJF\n")
+                    createProcess()
+                    sjf1 = sjf(p.processes)
+                    printData(sjf1, sjf1)
+                elif choice == 3:
+                    # Shortest Remaining Time First
+                    print("Executing SRTF\n")
+                    createProcess()
+                    sjf2 = sjfP(p.processes)
+                    printData(list(set(sjf2)), sjf2)
+                elif choice == 4:
+                    # Round Robin Algorithm
+                    print("Executing RR\n")
+                    createProcess()
+                    rr1 = roundRobin(p.processes)
+                    rrC = list(set(rr1))
+                    rrC.sort(key=lambda x: x.processID)
+                    printData(rrC, rr1)
+                elif choice == 5:
+                    # Priority Scheduling Algorithm
+                    print("Executing Priority Scheduling")
+                    mainP()
+                elif choice == 6:
+                    # Exit
+                    print("Exitting Simulator...")
+                    break
+                    quit()
         else:
-            print("Incorrect choice! Please try again")
-            break
+            print("Incorrect Choice! Please try again")
+        p.processes.clear()
+
+
+main()
